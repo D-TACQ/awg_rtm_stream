@@ -5,7 +5,7 @@ DELAY=${2:-1}
 
 wait_for_uut_ready() {
 	while true; do
-		STATE=$(echo rc_local_complete | nc acq1001_315 4220)
+		STATE=$(echo rc_local_complete | nc $UUT 4220)
 		echo STATE $STATE
 		if echo $STATE | grep -q 'rclc UP acq...._... ..:..:.. up'; then
 			echo UUT is ready!
