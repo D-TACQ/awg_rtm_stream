@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
+# usage:
+# ./play_loop_ao422.sh UUT [DELAY [ PATTERNS]]
 
 UUT=${1:-acq1001_315}
 DELAY=${2:-1}
+PATTERNS=${3:-ao422_patterns}
 
 wait_for_uut_ready() {
 	while true; do
-		STATE=$(echo rc_local_complete | nc acq1001_315 4220)
+		STATE=$(echo rc_local_complete | nc $UUT 4220)
 		echo STATE $STATE
 		if echo $STATE | grep -q 'rclc UP acq...._... ..:..:.. up'; then
 			echo UUT is ready!
@@ -20,7 +23,7 @@ wait_for_uut_ready
 set -e
 
 while true; do
-    for file in ao422_patterns/*; do
+    for file in $PATTERNS/*; do
         cat $file
 	sleep $DELAY
     done
