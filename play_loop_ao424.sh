@@ -22,6 +22,22 @@ wait_for_uut_ready
 
 set -e
 
+wait_for_uut_ready() {
+	while true; do
+		STATE=$(echo rc_local_complete | nc $UUT 4220)
+		echo STATE $STATE
+		if echo $STATE | grep -q 'rclc UP acq...._... ..:..:.. up'; then
+			echo UUT is ready!
+			break
+		fi
+		sleep 1
+	done
+}
+
+wait_for_uut_ready
+
+set -e
+
 while true; do
     for file in $PATTERNS/*; do
         cat $file
